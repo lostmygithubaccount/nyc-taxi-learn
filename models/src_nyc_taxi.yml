@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+
+  - name: main
+    database: nyc-taxi.duckdb
+    schema: main
+    tables:
+      - name: yellow
+        description: Yellow.
+      - name: green
+        description: Green. 
