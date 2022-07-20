@@ -1,2 +1,5 @@
 data
 *duckdb*
+dbt_packages/
+logs/
+target/

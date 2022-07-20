@@ -2,10 +2,64 @@ version: 2
 
 sources:
 
-  - name: main
-    database: main
+  - name: nyc_taxi
+    database: raw
     tables:
-      - name: yellow
-        description: Yellow.
-      - name: green
-        description: Green. 
+      - name: trips
+        description: "Yellow and green tax trips, May 2021 to April 2022"
+        external:
+          # Snowflake-specific syntax
+          location: "@raw.nyc_taxi.bucket"
+          file_format: "(type = parquet)"
+          # file path is {taxi_color}_tripdata_{year}-{month}.parquet
+          partitions:
+            - name: taxi_color
+              data_type: string
+              expression: split_part(metadata$filename, '_', 1)
+            - name: year
+              data_type: string
+              expression: split_part(split_part(metadata$filename, '_', 3), '-', 1)
+            - name: month
+              data_type: string
+              expression: split_part(split_part(split_part(metadata$filename, '_', 3), '-', 2), '.', 1)
+        columns:
+          - name: DOLocationID
+            data_type: int
+          - name: PULocationID
+            data_type: int
+          - name: RatecodeID
+            data_type: float
+          - name: VendorID
+            data_type: int
+          - name: airport_fee
+            data_type: float
+          - name: congestion_surcharge
+            data_type: float
+          - name: extra
+            data_type: float
+          - name: fare_amount
+            data_type: float
+          - name: improvement_surcharge
+            data_type: float
+          - name: improvement_surcharge
+            data_type: float
+          - name: mta_tax
+            data_type: float
+          - name: passenger_count
+            data_type: float
+          - name: payment_type
+            data_type: int
+          - name: store_and_fwd_flag
+            data_type: string
+          - name: tip_amount
+            data_type: float
+          - name: tolls_amount
+            data_type: float
+          - name: total_amount
+            data_type: float
+          - name: tpep_dropoff_datetime
+            data_type: bigint
+          - name: tpep_pickup_datetime
+            data_type: bigint
+          - name: trip_distance
+            data_type: float
