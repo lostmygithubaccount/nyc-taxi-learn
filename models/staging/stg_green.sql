@@ -20,4 +20,5 @@ select
     trip_type,
     congestion_surcharge
 --from green
-from {{ source('main', 'green') }}
+from {{ source('nyc_taxi', 'trips') }}
+where taxi_color = 'green'
